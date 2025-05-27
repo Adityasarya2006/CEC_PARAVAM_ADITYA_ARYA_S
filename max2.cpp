@@ -1,55 +1,33 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
- 
-class ATM{
-    private:
-        int pin = 1233;
-        double balance = 5000;
 
-        bool verifyPin(int enteredPin){
-            return enteredPin == pin;
-
-        }
+class Invoice
+{
     public:
-        void withdrawCash(int enteredPin, double amount)    
-        {
-            if (verifyPin(enteredPin))
-            {
-                if (amount <= balance)
-                {
-                    balance -= amount;
-                    cout << "Withdrawal successful. Remaining Balance: " << balance << endl;
-                }
-                else
-                {
-                    cout << "Insufficient balance." << endl; 
-                }
-            }
-            else
-            {
-                cout << " Invalid PIN! " << endl;
-            }
-        }
+   void generateInvoice( int productId)
+   {
+    cout << "Generating Invoice for Product ID: " << productId << endl;
+    cout << "Default quantity: 1 | No discount applied. " << endl;
+   }
+    
+   void generateInvoice( int productId, int quantity)
+   {
+    cout << "Generating Invoice for Product ID: " << productId << endl;
+    cout << "Quantity: " << quantity << "| No discount applied." << endl;
+   }
 
-        void checkBalance(int enteredPin)
-        {
-            if (verifyPin(enteredPin))
-            {
-                cout << "Your balance is: " << balance << endl;
-            }
-            else
-            {
-                cout << "Invalid PIN!" << endl;
-            }
-        }
-};
-
-int main(){
-    ATM myATM;
-
-    myATM.withdrawCash(1233,1000);
-    myATM.checkBalance(1233);
-
-    myATM.withdrawCash(1234,500);
+   void generateInvoice( int productId, int quantity, double discount)
+   {
+    cout << "Generating Invoice for Product ID: " << productId << endl;
+    cout << "Quantity: " << quantity << "| Discount: " << discount << "%" << endl;
+   }
+   };
+   
+   int main()
+   {
+    Invoice inv;
+    inv.generateInvoice(101);
+    inv.generateInvoice(102, 3);
+    inv.generateInvoice(103, 5, 10.0);
     return 0;
-}
+   }

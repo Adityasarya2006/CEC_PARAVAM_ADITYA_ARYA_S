@@ -1,102 +1,62 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
-class items
-{
-    private:
-        string item;
-        int cnt;
+class MedicalCase {
+public:
+    string patientName;
+    string caseType;
 
-    public:
-        int pr = 0, amt = 0;
-        int setit(int c)
-        {
-            cnt = c;
-        }
-        
-        void itm(string it, int cn)
-        {
-            if (it == "Mango")
-            {
-                pr = 2000;
-                amt = pr * cn;
-                cout <<endl<< "You Ordered "<<cn << " "<<it;
-            }
+    MedicalCase(string name, string type) : patientName(name), caseType(type) {}
 
-            else if (it == "Apple")
-            {
-                pr = 3000;
-                amt = pr * cn;
-                cout << endl<<"You Ordered "<<cn << " "<<it;
-            }
-
-            else if (it == "Banana")
-            {
-                pr = 4000;
-                amt = pr * cn;
-                cout << endl<<"You Ordered "<<cn << " "<<it;
-            }
-
-            else
-            {
-                cout << "We Do Not Have "<< it<<endl;
-            }
-
-        }
-
-        int getamt()
-        {
-            return amt;
-        }
-
-        float disc()
-        {
-            float ds = 0.15;
-            return ds;
-        }
-
+    virtual void registerCase() = 0;
 };
 
-int main()
-{
-    float amt1,amt2,amt3,amt;
-    items t1;
+class InfectiousDisease : public MedicalCase {
+public:
+    InfectiousDisease(string name) : MedicalCase(name, "Infectious Disease") {}
 
-    t1.itm("Mango", 10);
-    amt1 =t1.getamt();
-    cout <<endl<<"Price :"<< amt1 <<endl;
-
-    t1.itm("Banana", 10);
-    amt2 = t1.getamt();
-    cout <<endl<<"Price :"<< amt2<<endl;
-
-    t1.itm("Apple", 10);
-    amt3 = t1.getamt();
-    cout <<endl<<"Price :"<< amt3<<endl;
-
-    amt = amt1 + amt2 + amt3;
-
-    cout << "Before Discount : "<<amt<<endl;
-
-    if (amt1 >2000)
-    {
-        amt1 -= 500;
+    void registerCase() override {
+        cout << "Infectious Disease case registered for " << patientName << "." << endl;
+        cout << "Action: Isolation and contact tracing initiated." << endl;
     }
+};
 
-    if (amt2 >2000)
-    {
-        amt2 -= 500;
+class EmergencySurgery : public MedicalCase {
+public:
+    EmergencySurgery(string name) : MedicalCase(name, "Emergency Surgery") {}
+
+    void registerCase() override {
+        cout << "Emergency Surgery case registered for " << patientName << "." << endl;
+        cout << "Action: Surgical team alerted and operating room prepared." << endl;
     }
+};
 
-    if (amt3 >2000)
-    {
-        amt3 -= 500;
+class ChronicIllness : public MedicalCase {
+public:
+    ChronicIllness(string name) : MedicalCase(name, "Chronic Illness") {}
+
+    void registerCase() override {
+        cout << "Chronic Illness case registered for " << patientName << "." << endl;
+        cout << "Action: Long-term care plan developed and specialist consultation scheduled." << endl;
     }
+};
 
-    amt = amt1 + amt2 + amt3;
-  
-        cout << "Discounted Price : 1500"<<endl;
-        cout <<endl<<"Total Price :"<< amt<<endl;
+int main() {
+    MedicalCase* case1 = new InfectiousDisease("John Doe");
+    MedicalCase* case2 = new EmergencySurgery("Jane Smith");
+    MedicalCase* case3 = new ChronicIllness("Alice Johnson");
+
+    cout << "=== Medical Case Registration ===" << endl;
+    case1->registerCase();
+    cout << endl;
+    case2->registerCase();
+    cout << endl;
+    case3->registerCase();
+
+    delete case1;
+    delete case2;
+    delete case3;
 
     return 0;
 }

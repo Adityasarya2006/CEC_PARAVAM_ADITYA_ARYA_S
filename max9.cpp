@@ -1,95 +1,106 @@
 #include <iostream>
-
+#include <string>
 using namespace std;
 
-class Item {
+class Booking
+{
+    public:
+        string CustomerName;
+        int seats;
 
-private:
+        Booking(string name = "", int s=1): CustomerName(name), seats(s) {}
 
-    int quantity;
+        virtual void bookTicket()=0;
 
-    float pricePerItem;
-
-    float totalPrice;
-
-    float discount;
-
-public:
-
-    Item(int q, float p) {
-
-        quantity = q;
-
-        pricePerItem = p;
-
-        totalPrice = 0;
-
-        discount = 0;
-
-    }
-
-    void calculateTotal() {
-
-        totalPrice = quantity * pricePerItem;
-
-        if (totalPrice > 2000) {
-
-            discount = 0.2 * totalPrice;
-
-        } else {
-
-            discount = 0;
-
-        }
-
-    }
-
-    void display() {
-
-        float finalPrice = totalPrice - discount;
-
-        cout << "Quantity: " << quantity << endl;
-
-        cout << "Price per item: Rs. " << pricePerItem << endl;
-
-        cout << "Total price before discount: Rs. " << totalPrice << endl;
-
-        if (discount > 0) {
-
-            cout << "Discount applied: Rs. " << discount << endl;
-
-        } else {
-
-            cout << "No discount applied." << endl;
-
-        }
-
-        cout << "Final price to pay: Rs. " << finalPrice << endl;
-
-    }
-
+        virtual ~Booking() {}
 };
 
-int main() {
+class FlightBooking : public Booking{
+    public:
+        FlightBooking(string name,int s) : Booking(name, s) {}
 
-    int qty;
+        void bookTicket() override
+        {
+            cout << "Flight Ticket booked for " << CustomerName << "with" << seats << " seat(s)." << endl;
+        }
+};
+class TrainBooking : public Booking{
+    public:
+        TrainBooking(string name,int s) : Booking(name, s) {}
 
-    float price;
+        void bookTicket() override
+        {
+            cout << "Train Ticket booked for " << CustomerName << "with" << seats << " seat(s)." << endl;
+        }
+};
+class BusBooking : public Booking{
+    public:
+        BusBooking(string name,int s) : Booking(name, s) {}
 
-    cout << "Enter quantity: ";
+        void bookTicket() override
+        {
+            cout << "Bus Ticket booked for " << CustomerName << "with" << seats << " seat(s)." << endl;
+        }
+};
 
-    cin >> qty;
+class BookingManager{
+    public:
+        void confirmBooking(string name){
+            cout << "Booking confirmed for: " << name << endl;
+        }
+        void confirmBooking(string name, int s){
+            cout << "Booking confirmed for: " << name << " with " << s << " seat(s). " << endl;
+        }
 
-    cout << "Enter price per item (in Rs): ";
+        void confirmBooking(string name, int s,string date){
+            cout << "Booking confirmed for: " << name 
+                 << " | Seats:  " << s 
+                 << " | Date:  " << date << endl;   
+        }
+};
 
-    cin >> price;
+class GroupBooking
+{
+    public:
+        int totalseats;
+        GroupBooking(int seats = 0) : totalseats (seats) {}
 
-    Item item(qty, price);
+        GroupBooking operator+(const GroupBooking &other)
+        {
+            return GroupBooking(this->totalseats + other.totalseats);
 
-    item.calculateTotal();
+        }
 
-    item.display();
+        void display(){
+            cout << "Total group seats booked: " << totalseats << endl;
+        }
+};
+
+int main(){
+    Booking *booking1 = new FlightBooking("Rahul", 2);
+    Booking *booking2 = new TrainBooking("Ramesh", 3);
+    Booking *booking3 = new BusBooking("Vishnu", 2);
+
+    cout << "=== Runtime Polymerphism ===" << endl;
+    booking1->bookTicket();
+    booking2->bookTicket();
+    booking3->bookTicket();
+
+    cout << "\n=== Function Overloading ===" << endl;
+    BookingManager manager;
+    manager.confirmBooking("David");
+    manager.confirmBooking("ANA DE ARMAS" ,4);
+    manager.confirmBooking("Johnny",5, "26-07-2006");
+
+    cout << "\n=== Operator Overloading ===" << endl;
+    GroupBooking group1(4);
+    GroupBooking group2(6);
+    GroupBooking totalGroup = group1 + group2;
+    totalGroup.display();
+
+    delete booking1;
+    delete booking2;
+    delete booking3;
 
     return 0;
-
 }

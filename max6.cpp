@@ -1,39 +1,38 @@
-#include<iostream>
-using namespace std;
+#include <iostream>
+using  namespace std;
 
-class Product {
-    private:
-       int quantity;
-       float priceperitem;
+class Animal
 
+{
     public:
-      void setProduct(int q, float price){
-        if(q > 0 && price > 0){
-            quantity = q;
-            priceperitem = price;
-        }
-        else {
-           cout <<"Invalid quantity or price!" << endl;
-        }
-      }
-      float getTotalPrice(){
-        return quantity * priceperitem;
-      }
-      int getQuantity(){
-        return quantity;
-      }
-      float getUnitPrice(){
-        return priceperitem;
-      }
+    virtual void sound() = 0;
+    virtual ~Animal() {}
+};
+class Dog : public Animal
+{
+    public:
+    void sound() override
+    {
+        cout << "Dog says: Woof!" << endl;
+    }
 };
 
-int main(){
-    Product  item1;
-    item1.setProduct(3, 499.99);
-
-    cout << "Item Bought: " << item1.getQuantity()<< endl;
-    cout << "Price per item: " << item1.getUnitPrice()<< endl;
-    cout << "total cost: " << item1.getTotalPrice()<< endl;
-
+class Cat : public Animal
+{
+    public:
+    void sound() override
+    {
+        cout << "Cat says: Meow!" << endl;
+    }
+};
+ int main()
+ {
+    Animal *a1 = new Dog();
+    Animal *a2 = new Cat();
+    a1->sound();
+    a2->sound();
+    delete a1;
+    delete a2;
     return 0;
-}
+
+ }

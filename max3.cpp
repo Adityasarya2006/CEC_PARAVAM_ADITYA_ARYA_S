@@ -1,55 +1,26 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
- 
-class ATM{
-    private:
-        int pin = 1233;
-        double balance = 5000;
-
-        bool verifyPin(int enteredPin){
-            return enteredPin == pin;
-
-        }
+ class Distance{
     public:
-        void withdrawCash(int enteredPin, double amount)    
-        {
-            if (verifyPin(enteredPin))
-            {
-                if (amount <= balance)
-                {
-                    balance -= amount;
-                    cout << "Withdrawal successful. Remaining Balance: " << balance << endl;
-                }
-                else
-                {
-                    cout << "Insufficient balance." << endl; 
-                }
-            }
-            else
-            {
-                cout << " Invalid PIN! " << endl;
-            }
-        }
+       int meters;
 
-        void checkBalance(int enteredPin)
-        {
-            if (verifyPin(enteredPin))
-            {
-                cout << "Your balance is: " << balance << endl;
-            }
-            else
-            {
-                cout << "Invalid PIN!" << endl;
-            }
-        }
-};
+       Distance(int m = 0){
+        meters = m;
+       }
 
-int main(){
-    ATM myATM;
+       Distance operator+(const Distance &d){
+        return Distance(meters + d.meters);
+       }
 
-    myATM.withdrawCash(1233,7000);
-    myATM.checkBalance(1233);
+       void display(){
+         cout << "Distance: " << meters << "meters" << endl;
+       }
+ };
 
-    myATM.withdrawCash(1234,500);
+ int main(){
+    Distance d1(10), d2(15);
+    Distance d3=d1 + d2;
+    d3.display();
+
     return 0;
-}
+ }

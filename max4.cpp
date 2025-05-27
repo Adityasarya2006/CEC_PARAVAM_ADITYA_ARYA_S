@@ -1,64 +1,45 @@
 #include <iostream>
-using namespace std;
+#include <string>
 
-class Person
-{
-    private:
-        int pin,crd;
-        string name;
+class Item {
+public:
+    int quantity;
+    double price;
+    std::string name;
 
-        public:
-            float bal = 240806;
-            int verify(int p, int c)        //
-            {
-                if (c == 128)
-                {
-                    if (p == 2468)
-                        bala();
-                    else
-                        cout << "Invalid PIN";
-                }
-                else
-                    cout << "Invalid Card No.";
-                
-            }
+    Item(int quantity, double price, std::string name) : quantity(quantity), price(price), name(name) {}
 
-            int detail()
-            {
-                cout << "Enter Your Name : ";
-                cin >> name;
-                cout << "Enter Your PIN : " ;
-                cin >>pin;
-                
-                cout << "Enter Card No :";
-                cin >>crd;
-            }
+    // Operator overloading for + (addition)
+    Item operator+(const Item& other) const {
+        return Item(quantity + other.quantity, (price + other.price)/2, name + "+" + other.name);
+    }
 
-            void bala()
-            {
-                int wit;
-                cout << "Enter The Amount To Withdraw : ";
-                cin >>wit;
+    // Operator overloading for == (equality)
+    bool operator==(const Item& other) const {
+        return (quantity == other.quantity) && (price == other.price);
+    }
 
-                if (wit <= bal)
-                {
-                    bal = bal-wit;
-                    cout << "Money Withdrawal Completed."<<endl<<endl<<"Your Balance Is : "<<bal;
-                }
-                else
-                {
-                    cout << "Insufficient Balance."<<endl<<endl<<"You Are Broke ... ";
-                }
-
-            }
-
+    // Friend function for operator overloading of << (output stream)
+    friend std::ostream& operator<<(std::ostream& os, const Item& item) {
+        os << "Item -> Name: " << item.name << ", Quantity: " << item.quantity << ", Price: $" << item.price;
+        return os;
+    }
 };
 
-int main()
-{
-    float bal = 240806;
-    Person n;
-    n.detail();
-    n.verify(2468, 128);
+int main() {
+    Item item1(15, 350.75, "Apple");
+    Item item2(5, 100.25, "Banana");
+    Item item3(15, 350.75, "Apple");
+
+    // Demonstrating operator overloading
+    Item item4 = item1 + item2;
+    std::cout << item4 << std::endl;
+
+    if (item1 == item3) {
+        std::cout << "item1 and item3 are same in quantity and price." << std::endl;
+    } else {
+         std::cout << "item1 and item3 are not the same in quantity and price." << std::endl;
+    }
+
     return 0;
 }

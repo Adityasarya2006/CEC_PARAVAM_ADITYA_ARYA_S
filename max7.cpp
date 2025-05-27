@@ -1,92 +1,68 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
-class items
+class FIR
 {
-    private:
-        string item;
-        int cnt;
-
     public:
-        int pr = 0, amt = 0;
-        int setit(int c)
-        {
-            cnt = c;
-        }
-        
-        void itm(string it, int cn)
-        {
-            if (it == "Mango")
-            {
-                pr = 10;
-                amt = pr * cn;
-                cout <<endl<< "You Ordered "<<cn << " "<<it;
-            }
+    string complainantName;
 
-            else if (it == "Apple")
-            {
-                pr = 12;
-                amt = pr * cn;
-                cout << endl<<"You Ordered "<<cn << " "<<it;
-            }
+    FIR(string name): complainantName(name) {}
 
-            else if (it == "Banana")
-            {
-                pr = 15;
-                amt = pr * cn;
-                cout << endl<<"You Ordered "<<cn << " "<<it;
-            }
+    virtual void registerCase() = 0;
+};
 
-            else
-            {
-                cout << "We Do Not Have "<< it<<endl;
-            }
+class TheftCase : public FIR
+{
+    public:
+    TheftCase( string name ) : FIR(name) {}
+    void registerCase() override
+    {
+        cout << "Theft FIR registered for " << complainantName << "." << endl;
+        cout << " Action Investigation started for stolen property. " << endl;
+}
+};
 
-        }
+class AccidentCase : public FIR
+{
+    public:
+    AccidentCase( string name ) : FIR(name) {}
+     
+    void registerCase() override
+    {
+        cout << "Accident FIR registered for " << complainantName << "." << endl;
+        cout << " Action Ambulance dispatched and accident site team notified. " << endl;
+    }
+};
+class MissingPersonCase : public FIR
+{
+    public:
+    MissingPersonCase( string name ) : FIR(name) {}
 
-        int getamt()
-        {
-            return amt;
-        }
-
-        float disc()
-        {
-            float ds = 0.15;
-            return ds;
-        }
-
+    void registerCase() override
+    {
+        cout << "Missing Person FIR registered for " << complainantName << "." << endl;
+        cout << "Action Local patrol units alerted and investigation initiated." << endl;
+    }
 };
 
 int main()
 {
-    float amt1,amt2,amt;
-    items t1;
+    FIR *case1 = new TheftCase("Ravi");
+    FIR *case2 = new AccidentCase("Sita");
+    FIR *case3 = new MissingPersonCase("Karan");
 
+    cout << "=== FIR Registeration ===" << endl;
+    case1->registerCase();
+    cout << endl;
+    case2->registerCase();
+    cout << endl;
+    case3->registerCase();
 
-    t1.itm("Mango", 12);
-    amt1 =t1.getamt();
-    cout <<endl<<"Price :"<< amt1 <<endl;
-
-    t1.itm("Banana", 24);
-    amt2 = t1.getamt();
-    cout <<endl<<"Price :"<< amt2<<endl;
-
-    amt = amt1 + amt2;
-
-    if(amt <= 500)
-    {
-        cout << "Before Discount : "<<amt<<endl;
-        amt = amt - (amt*t1.disc());
-        
-        cout << "Discounted Price : "<<amt*t1.disc();
-        cout <<endl<<"Total Price :"<< amt<<endl;
-    }
-
-    else
-    {
-        cout <<endl<<"Total Price :"<< amt<<endl;
-    }
-
+    delete case1;
+    delete case2;
+    delete case3;
 
     return 0;
 }
+
